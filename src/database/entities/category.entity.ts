@@ -5,9 +5,12 @@ export class Category {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true })
-  title: string;
+  @Column({ nullable: false, default: 0 })
+  parentId: number;
 
-  @Column({ nullable: true })
-  description: string;
+  @Column({ nullable: true, length: 255 })
+  image: string;
+
+  @Column({ nullable: false, default: false })
+  status: boolean;
 }
