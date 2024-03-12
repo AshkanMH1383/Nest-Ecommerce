@@ -1,16 +1,13 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity()
-export class User {
+@Entity('userGroup')
+export class UserGroup {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  firstName: string;
+  @Column({ length: 64 })
+  name: string;
 
   @Column()
-  lastName: string;
-
-  @Column()
-  age: number;
+  permission: string;
 }
