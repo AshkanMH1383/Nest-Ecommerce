@@ -1,13 +1,13 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { UserGroup } from './user-group.entity';
+import { CustomerGroup } from './customer-group.entity';
 
-@Entity('User')
-export class User {
+@Entity('Customer')
+export class Customer {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => UserGroup, (userGroup) => userGroup.id)
-  userGroup: UserGroup;
+  @ManyToOne(() => CustomerGroup, (customerGroup) => customerGroup.id)
+  customerGroup: CustomerGroup;
 
   @Column({ nullable: false, length: 20 })
   username: string;

@@ -1,10 +1,10 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { UserModule } from './api/user/user.module';
-import { ProductModule } from './api/catalog/product/product.module';
-import { CategoryModule } from './api/catalog/category/category.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
+import { AuthModule } from './api/auth/auth.module';
+import { CatalogModule } from './api/catalog/catalog.module';
+import { UserModule } from './api/user/user.module';
 
 @Module({
   imports: [
@@ -18,9 +18,9 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
+    AuthModule,
     UserModule,
-    ProductModule,
-    CategoryModule,
+    CatalogModule,
   ],
   controllers: [],
   providers: [],

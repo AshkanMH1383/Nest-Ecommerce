@@ -1,14 +1,14 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Product } from './product.entity';
 import { Language } from './language.entity';
-import { Category } from './category.entity';
 
-@Entity('categoryDescription')
-export class CategoryDescription {
+@Entity('ProductDescription')
+export class ProductDescription {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Category, (category) => category.id)
-  category: Category;
+  @ManyToOne(() => Product, (product) => product.id)
+  product: Product;
 
   @ManyToOne(() => Language, (language) => language.id)
   language: Language;
@@ -18,6 +18,9 @@ export class CategoryDescription {
 
   @Column({ nullable: true })
   description: string;
+
+  @Column({ nullable: true })
+  tag: string;
 
   @Column({ nullable: false, length: 255 })
   metaTitle: string;
