@@ -6,11 +6,13 @@ import {
   Param,
   Delete,
   Put,
+  Query,
 } from '@nestjs/common';
 import { UserGroupService } from './user-group.service';
 import { CreateUserGroupDto } from './dto/create-user-group.dto';
 import { UpdateUserGroupDto } from './dto/update-user-group.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { FilterUserGroupDto } from './dto/filter-user-group.dto';
 
 @Controller('user-group')
 @ApiTags('user-group')
@@ -23,8 +25,8 @@ export class UserGroupController {
   }
 
   @Get()
-  findAll() {
-    return this.userGroupService.findAll();
+  findAll(@Query() filter: FilterUserGroupDto) {
+    return this.userGroupService.findAll(filter);
   }
 
   @Get(':id')

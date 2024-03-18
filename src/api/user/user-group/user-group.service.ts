@@ -4,6 +4,8 @@ import { UpdateUserGroupDto } from './dto/update-user-group.dto';
 import { Repository } from 'typeorm';
 import { UserGroup } from 'src/database/entities/user-group.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { FilterUserGroupDto } from './dto/filter-user-group.dto';
+import { Pagination } from 'src/utils/pagination';
 
 @Injectable()
 export class UserGroupService {
@@ -21,9 +23,16 @@ export class UserGroupService {
     return new_user_group;
   }
 
-  async findAll() {
-    const user_groups = await this.userGroupRepository.find();
-    return user_groups;
+  async findAll(filter: FilterUserGroupDto) {
+    const query = this.userGroupRepository.createQueryBuilder().select('*');
+
+    if (filter.name) {
+      query.where('name= :name', { name: filter.name });
+    }
+
+    Pagination(query, { ...filter });
+
+    return await query.execute();
   }
 
   async findOne(id: number) {
