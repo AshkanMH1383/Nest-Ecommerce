@@ -1,13 +1,13 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity('UserGroup')
-export class UserGroup {
+@Entity('Setting')
+export class Setting {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 64 })
-  name: string;
+  @Column({ nullable: false, length: 128 })
+  code: string;
 
   @Column('text')
-  permission: string;
+  value: string;
 }

@@ -27,7 +27,7 @@ export class Customer {
   @Column({ nullable: true, length: 20 })
   mobile: string;
 
-  @Column({ nullable: true, length: 255 })
+  @Column('text')
   image: string;
 
   @Column({ nullable: false, default: false })

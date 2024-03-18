@@ -22,9 +22,9 @@ export class CategoryDescription {
   @Column({ nullable: false, length: 255 })
   metaTitle: string;
 
-  @Column({ nullable: true, length: 255 })
+  @Column('text')
   metaDescription: string;
 
-  @Column({ nullable: true, length: 255 })
+  @Column('text')
   metaKeyword: string;
 }

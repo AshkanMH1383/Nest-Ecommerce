@@ -24,7 +24,6 @@ async function bootstrap() {
     .setTitle('Nest Ecommerce API')
     .setDescription('The Nest Ecommerce API description')
     .setVersion('1.0')
-    .addTag('Nest Ecommerce')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

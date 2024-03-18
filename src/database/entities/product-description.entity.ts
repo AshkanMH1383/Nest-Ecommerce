@@ -16,7 +16,7 @@ export class ProductDescription {
   @Column({ nullable: false, length: 255 })
   name: string;
 
-  @Column({ nullable: true })
+  @Column('text')
   description: string;
 
   @Column({ nullable: true })
@@ -25,9 +25,9 @@ export class ProductDescription {
   @Column({ nullable: false, length: 255 })
   metaTitle: string;
 
-  @Column({ nullable: true, length: 255 })
+  @Column('text')
   metaDescription: string;
 
-  @Column({ nullable: true, length: 255 })
+  @Column('text')
   metaKeyword: string;
 }

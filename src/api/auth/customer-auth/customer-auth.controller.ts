@@ -1,34 +1,20 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { CustomerAuthService } from './customer-auth.service';
 import { CreateCustomerAuthDto } from './dto/create-customer-auth.dto';
-import { UpdateCustomerAuthDto } from './dto/update-customer-auth.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('customer-auth')
+@ApiTags('customer-auth')
 export class CustomerAuthController {
   constructor(private readonly customerAuthService: CustomerAuthService) {}
 
-  @Post()
-  create(@Body() createCustomerAuthDto: CreateCustomerAuthDto) {
-    return this.customerAuthService.create(createCustomerAuthDto);
+  @Post('login')
+  login(@Body() createCustomerAuthDto: CreateCustomerAuthDto) {
+    return this.customerAuthService.login(createCustomerAuthDto);
   }
 
-  @Get()
-  findAll() {
-    return this.customerAuthService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.customerAuthService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCustomerAuthDto: UpdateCustomerAuthDto) {
-    return this.customerAuthService.update(+id, updateCustomerAuthDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.customerAuthService.remove(+id);
+  @Post('register')
+  register(@Body() createCustomerAuthDto: CreateCustomerAuthDto) {
+    return this.customerAuthService.register(createCustomerAuthDto);
   }
 }
