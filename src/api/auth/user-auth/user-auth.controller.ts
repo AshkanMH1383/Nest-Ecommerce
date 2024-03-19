@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Req, Ip } from '@nestjs/common';
 import { UserAuthService } from './user-auth.service';
 import { LoginUserAuthDto } from './dto/login-user-auth.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -9,7 +9,11 @@ export class UserAuthController {
   constructor(private readonly userAuthService: UserAuthService) {}
 
   @Post('login')
-  login(@Body() loginUserAuthDto: LoginUserAuthDto) {
-    return this.userAuthService.login(loginUserAuthDto);
+  login(@Body() loginUserAuthDto: LoginUserAuthDto, @Req() req, @Ip() ip) {
+    return this.userAuthService.login(
+      loginUserAuthDto,
+      req.headers['user-agent'],
+      ip,
+    );
   }
 }

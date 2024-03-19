@@ -6,6 +6,7 @@ import { User } from 'src/database/entities/user.entity';
 import { UserService } from 'src/api/user/user.service';
 import { JwtModule } from '@nestjs/jwt';
 import { UserAuthStrategy } from './user-auth.strategy';
+import { UserLogin } from 'src/database/entities/user-login.entity';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { UserAuthStrategy } from './user-auth.strategy';
       secret: 'secret',
       signOptions: { expiresIn: '1d' },
     }),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, UserLogin]),
   ],
   controllers: [UserAuthController],
   providers: [UserAuthService, UserService, UserAuthStrategy],

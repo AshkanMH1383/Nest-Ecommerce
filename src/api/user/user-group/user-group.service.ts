@@ -27,7 +27,7 @@ export class UserGroupService {
     const query = this.userGroupRepository.createQueryBuilder().select('*');
 
     if (filter.name) {
-      query.where('name= :name', { name: filter.name });
+      query.where('name= :name', { name: `%${filter.name}%` });
     }
 
     Pagination(query, { ...filter });
