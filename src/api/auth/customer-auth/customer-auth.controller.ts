@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { CustomerAuthService } from './customer-auth.service';
-import { CreateCustomerAuthDto } from './dto/create-customer-auth.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { LoginCustomerAuthDto } from './dto/login-customer-auth.dto';
+import { RegisterCustomerAuthDto } from './dto/register-customer-auth.dto';
 
 @Controller('customer-auth')
 @ApiTags('customer-auth')
@@ -9,12 +10,12 @@ export class CustomerAuthController {
   constructor(private readonly customerAuthService: CustomerAuthService) {}
 
   @Post('login')
-  login(@Body() createCustomerAuthDto: CreateCustomerAuthDto) {
-    return this.customerAuthService.login(createCustomerAuthDto);
+  login(@Body() loginCustomerAuthDto: LoginCustomerAuthDto) {
+    return this.customerAuthService.login(loginCustomerAuthDto);
   }
 
   @Post('register')
-  register(@Body() createCustomerAuthDto: CreateCustomerAuthDto) {
-    return this.customerAuthService.register(createCustomerAuthDto);
+  register(@Body() registerCustomerAuthDto: RegisterCustomerAuthDto) {
+    return this.customerAuthService.register(registerCustomerAuthDto);
   }
 }

@@ -12,12 +12,13 @@ import {
 import { UserGroupService } from './user-group.service';
 import { CreateUserGroupDto } from './dto/create-user-group.dto';
 import { UpdateUserGroupDto } from './dto/update-user-group.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FilterUserGroupDto } from './dto/filter-user-group.dto';
 import { UserAuthGuard } from 'src/api/auth/user-auth/user-auth.guard';
 
 @Controller('user-group')
 @ApiTags('user-group')
+@ApiBearerAuth()
 export class UserGroupController {
   constructor(private readonly userGroupService: UserGroupService) {}
 

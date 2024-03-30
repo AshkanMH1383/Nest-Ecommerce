@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as passport from 'passport';
+import * as csurf from 'csurf';
 import * as session from 'express-session';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -19,7 +20,7 @@ async function bootstrap() {
   );
   app.use(passport.initialize());
   app.use(passport.session());
-
+  // app.use(csurf());
   const config = new DocumentBuilder()
     .setTitle('Nest Ecommerce API')
     .setDescription('The Nest Ecommerce API description')
