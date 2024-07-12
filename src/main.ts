@@ -1,35 +1,25 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import * as passport from 'passport';
-import * as csurf from 'csurf';
-import * as session from 'express-session';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AppModule } from './app.module';
+import { AllExceptionsFilter } from './response/response.filter';
+import { ResponseInterceptor } from './response/response.interceptor';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(
+    AppModule,
+  );
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
     }),
   );
-  app.use(
-    session({
-      secret: 'secret',
-    }),
-  );
-  app.use(passport.initialize());
-  app.use(passport.session());
-  // app.use(csurf());
-  const config = new DocumentBuilder()
-    .setTitle('Nest Ecommerce API')
-    .setDescription('The Nest Ecommerce API description')
-    .setVersion('1.0')
-    .build();
+  
+  app.useGlobalFilters(new AllExceptionsFilter());
+  app.useGlobalInterceptors(new ResponseInterceptor());
 
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, document);
-
+  
   await app.listen(3000);
 }
 bootstrap();

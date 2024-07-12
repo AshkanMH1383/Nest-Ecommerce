@@ -1,21 +1,44 @@
-# Use root/example as user/password credentials
-version: '3.1'
+version: '3.8'
 
 services:
-
-  mysql:
-    image: mysql
+  app:
+    image: node:14
+    container_name: backend
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
     ports:
-      - '3306:3306'
-    restart: always
+      - "3000:3000"
     environment:
-      - MYSQL_DATABASE=nestEcommerce
-      - MYSQL_ROOT_PASSWORD=root
+      - NODE_ENV=production
+      - MONGO_HOST=mongodb
+      - MONGO_PORT=27017
+      - MONGO_DB=ecommerce
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - mongodb
+      - redis
+    command: >
+      sh -c "npm install && npm run build && npm run start:prod"
 
-  phpmyadmin:
-    image: phpmyadmin
-    restart: always
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
     ports:
-      - 8080:80
-    environment:
-      - PMA_ARBITRARY=1
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+volumes:
+  mongo-data:
+  redis-data:
