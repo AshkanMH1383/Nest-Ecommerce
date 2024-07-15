@@ -1,9 +1,4 @@
 import {
-    IsArray,
-    IsEmail,
-    IsEnum,
-    IsMobilePhone,
-    IsNumber,
     IsOptional,
     IsString,
     IsStrongPassword,
@@ -15,5 +10,11 @@ export default class LoginUserDto {
 
     @IsStrongPassword()
     password: string;
+
+    @IsOptional()
+    ip: string;
+
+    @IsOptional()
+    userAgent: string;
 }
   

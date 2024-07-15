@@ -9,6 +9,7 @@ import {
   IsStrongPassword,
 } from 'class-validator';
 import { EUserStatus } from '../enums/user_status.enum';
+import MatchPassword from 'src/validations/match_password.validator';
 
 export default class CreateUserDto {
   @IsString()
@@ -16,10 +17,12 @@ export default class CreateUserDto {
 
   @IsStrongPassword()
   @IsOptional()
+  @MatchPassword('confirm', { message: 'Confirm password does not match the password.' })
   password: string;
 
   @IsStrongPassword()
   @IsOptional()
+  @MatchPassword('password', { message: 'Confirm password does not match the password.' })
   confirm: string;
 
   @IsOptional()

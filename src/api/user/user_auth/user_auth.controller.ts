@@ -1,42 +1,44 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, HttpException } from '@nestjs/common';
-import { UserService } from './user.service';
-import CreateUserDto from './dtos/create_user.dto';
+import { Controller, Get, Post, Body, Param, Put, Delete, HttpException, Req, UnauthorizedException } from '@nestjs/common';
 import { PasswordService } from 'src/hash/password.service';
+import LoginUserDto from './dtos/user_login.dto';
+import { UserService } from '../user/user.service';
+import { Request } from 'express';
+import { UserAuthService } from './user_auth.service';
 
-@Controller('user')
-export class UserController {
+@Controller('user_auth')
+export class UserAuthController {
   constructor(
-    private passwordService: PasswordService,
-    private userService: UserService
+    private readonly userService: UserService,
+    private readonly passwordService: PasswordService,
+    private userAuthService: UserAuthService
   ) {}
 
-  @Post()
-  async login(@Body() createUserDto: CreateUserDto) {
-    let user: any = [];
+  @Post('login')
+  async login(@Body() loginUserDto: LoginUserDto , @Req() req: Request) {
+    const user = await this.userService.findOneByUsername(loginUserDto.username);
+    if(!user) 
+      throw new HttpException('user not found' , 404)
+
+    if(this.userAuthService.checkFailedLoginAttemps(user)) {
+      throw new UnauthorizedException('Failed Loggin Attemps');
+    }
     
-    if(createUserDto.email) {
-      user = await this.userService.findOneByEmail(createUserDto.email);
-      if(user)
-        throw new HttpException('this email registred by another user' , 400)
+
+    const isMatch = await this.passwordService.comparePassword(loginUserDto.password , user.password);
+    console.log(isMatch)
+    if(!isMatch) {
+      await this.userAuthService.addFailedLoginAttemps(user);
+      throw new UnauthorizedException('Invalid username or password');
     }
 
-    if(createUserDto.mobile) {
-      user = await this.userService.findOneByMobile(createUserDto.mobile);
-      if(user)
-        throw new HttpException('this mobile registred by another user' , 400)
-    }
+    const access_token = await this.userAuthService.login({
+      ...loginUserDto,
+      ip: req.ip,
+      userAgent: req.headers['user-agent'],
+    } , user)
 
-    if(createUserDto.username) {
-      user = await this.userService.findOneByUsername(createUserDto.username);
-      if(user)
-        throw new HttpException('this username registred by another user' , 400)
-    }
+    return access_token;
 
-    if(createUserDto.password) {
-      createUserDto.password = await this.passwordService.hashPassword(createUserDto.password);
-    }
-
-    return this.userService.create(createUserDto);
   }
 
 

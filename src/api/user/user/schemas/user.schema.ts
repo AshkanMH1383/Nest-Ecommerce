@@ -34,6 +34,12 @@ export class User extends Document{
   @Prop({ default: [] })
   groups: string[];
 
+  @Prop({ default: '' })
+  token: string;
+
+  @Prop({ default: 0 })
+  failed_login_attemps: number;
+
   @Prop({ required: true })
   date_added: string;
 

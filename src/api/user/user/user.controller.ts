@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Param, Put, Delete, HttpException } from '
 import { UserService } from './user.service';
 import CreateUserDto from './dtos/create_user.dto';
 import { PasswordService } from 'src/hash/password.service';
+import UpdateUserDto from './dtos/update_user.dto';
 
 @Controller('user')
 export class UserController {
@@ -39,6 +40,15 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
+  @Put(':user_id')
+  async updateOne(
+    @Param('user_id') user_id: string,
+    @Body() updateUserDto: UpdateUserDto
+
+  ) {
+    return await this.userService.updateOne(user_id, updateUserDto);
+  }
+
   @Get()
   async findAll() {
     return this.userService.findAll();
@@ -49,30 +59,7 @@ export class UserController {
     @Param('key') key: string,
     @Param('value') value: string
   ) {
-
-    let data: any = [];
-    switch (key) {
-      case 'id':
-        data = await this.userService.findOneById(value);
-        break;
-
-      case 'email':
-        data = await this.userService.findOneByEmail(value);
-        break;
-
-      case 'mobile':
-        data = await this.userService.findOneByMobile(value);
-        break;
-
-      case 'username':
-        data = await this.userService.findOneByUsername(value);
-        break;
-    }
-    
-    if(!data)
-      throw new HttpException('user not found' , 404)
-
-    return data;
+    return await this.userService.findOne(key, value);
   }
 
   @Delete(':key/:value')
